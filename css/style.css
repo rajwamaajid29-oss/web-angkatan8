@@ -2471,13 +2471,13 @@ footer h3, .footer-brand {
   }
 
   .hero h1 {
-    font-size: 3.4rem;
-    letter-spacing: 0.05em;
-    margin: 24px 0 18px;
+    font-size: clamp(1.45rem, 7vw, 1.95rem);
+    letter-spacing: 0.04em;
+    margin: 20px 0 14px;
   }
 
   .tag {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1.6;
   }
 
@@ -2557,4 +2557,18 @@ footer h3, .footer-brand {
   .tag #hSub::before { margin: 22px auto 20px; }
   .social { margin-top: 30px; }
   .hstats { margin-top: 36px; }
+}
+
+/* HP: navbar/header lebih ramping */
+@media (max-width: 600px) {
+  :root { --nav-h: 54px; }
+  .brand { font-size: 0.9rem; }
+  #burger { font-size: 1.2rem; padding: 4px; }
+  #burger svg { width: 18px; height: 18px; }
+}
+
+@media (max-width: 600px) {
+  .tag #hTag { font-size: 0.95rem; line-height: 1.45; }
+  .tag #hSub { font-size: 0.66rem; letter-spacing: 0.22em; }
+  .tag #hSub::before { margin: 16px auto 14px; }
 }
