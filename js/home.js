@@ -30,7 +30,7 @@ $('#hSocial').innerHTML = Object.keys(A.sosmed).map(k => `
 const totalMembers = SANTRI.length + SANTRIWATI.length;
 const statsData = [
   [totalMembers, 'Anggota', 1],
-  [A.angkatanKe, 'Angkatan', 1],
+  [PRESTASI.length, 'Prestasi', 1],
   [A.tahunLulus, 'Lulus', 0]
 ];
 
