@@ -7,7 +7,7 @@ const ANGKATAN = {
   tahunMasuk: 2022,
   tahunLulus: 2025,
   sosmed: {
-    instagram: 'https://www.instagram.com/abseist.08/',
+    instagram: 'https://instagram.com',
     tiktok: 'https://tiktok.com'
   },
   arti: 'Lazuardi berarti biru langit yang melambangkan keluasan ilmu, kemurnian niat, dan keteguhan iman. Santri putra dan santriwati putri belajar di sisi kampus yang berbeda, namun selalu dinaungi langit doa yang sama.',

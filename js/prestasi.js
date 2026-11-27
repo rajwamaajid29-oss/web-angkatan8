@@ -119,7 +119,10 @@ function showPrestasiModal(nama) {
 
 $('#pChips').onclick = e => {
   const btn = e.target.closest('.chip-btn');
-  if (btn) renderPrestasiGrid(btn.dataset.cat);
+  if (btn) {
+    renderPrestasiGrid(btn.dataset.cat);
+    btn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  }
 };
 
 $('#pGrid').onclick = e => {

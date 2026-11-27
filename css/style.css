@@ -2572,3 +2572,59 @@ footer h3, .footer-brand {
   .tag #hSub { font-size: 0.66rem; letter-spacing: 0.22em; }
   .tag #hSub::before { margin: 16px auto 14px; }
 }
+
+/* HP: statistik & filter prestasi dirapikan */
+@media (max-width: 600px) {
+  .prestasi-stats-bar {
+    gap: 0;
+    padding: 14px 4px;
+    margin-bottom: 24px;
+  }
+
+  .prestasi-stat-item {
+    padding: 2px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .prestasi-stat-num {
+    font-size: 1.7rem;
+    margin-bottom: 4px;
+  }
+
+  .prestasi-stat-label {
+    font-size: 0.7rem;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  /* Chip jadi satu baris yang bisa digeser, tepi sampai ke layar */
+  .chips {
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 0 -20px 24px;
+    padding: 2px 20px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding: 0 20px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chips::-webkit-scrollbar { display: none; }
+
+  .chip-btn {
+    flex: none;
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    scroll-snap-align: start;
+  }
+
+  .grid-prestasi {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
