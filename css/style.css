@@ -1171,9 +1171,38 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin-bottom: 24px;
   font-size: 0.8125rem;
   color: var(--mut);
+}
+
+.members-status .count {
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+}
+
+.members-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.members-hint svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--gold);
+}
+
+@media (max-width: 600px) {
+  .members-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
 .grid-members {
@@ -1183,70 +1212,95 @@ h3 {
 }
 
 .member-card {
+  position: relative;
   background-color: var(--bg-card);
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
   text-align: left;
   box-shadow: var(--shadow);
-  transition: transform var(--duration-quick), border-color var(--duration-quick);
+  transition: transform var(--duration-normal) var(--ease-out), border-color var(--duration-quick), box-shadow var(--duration-normal);
 }
 
-.member-card:hover {
-  transform: translateY(-4px);
+.member-card:hover,
+.member-card:focus-visible {
+  transform: translateY(-5px);
   border-color: var(--acc);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(217, 181, 74, 0.35);
+  outline: none;
 }
 
 .member-photo {
   position: relative;
   overflow: hidden;
-  background-color: #ede8df;
+  background-color: #1a1f2e;
 }
 
 .member-photo img {
+  display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  transition: transform var(--duration-normal) var(--ease-out);
+  object-position: center 20%; /* fokus ke wajah */
+  transition: transform 500ms var(--ease-out);
 }
 
 .member-card:hover .member-photo img {
-  transform: scale(1.04);
+  transform: scale(1.06);
+}
+
+/* gradasi gelap di bawah foto agar nama terbaca */
+.member-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(9, 12, 18, 0) 48%, rgba(9, 12, 18, 0.82) 82%, rgba(9, 12, 18, 0.96) 100%);
 }
 
 .member-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 3px 8px;
-  background: rgba(9, 12, 18, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius-xs);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #ffffff;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #f0d77c, #d9b54a);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #2a2008;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .member-info {
-  padding: 14px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 14px 14px 14px;
 }
 
 .member-info h4 {
   font-family: var(--sans);
   font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: 700;
+  line-height: 1.25;
   margin-bottom: 4px;
-  white-space: nowrap;
+  color: #ffffff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--fg);
 }
 
 .member-sub {
-  font-size: 0.8125rem;
-  color: var(--mut);
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 /* ==========================================================================
@@ -2138,6 +2192,9 @@ h3 {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  max-height: calc(100vh - 40px);
+  max-height: calc(100svh - 40px);
+  overflow-y: auto;
   animation: modalIn 220ms var(--ease-out);
 }
 
@@ -2178,55 +2235,65 @@ h3 {
 
 .modal-header-hero {
   position: relative;
-  height: 180px;
-  background-color: #ede8df;
-  overflow: hidden;
+  height: 150px;
+  background: linear-gradient(135deg, #efe3bd 0%, #f6efdc 55%, #fff 100%);
+  overflow: visible; /* agar foto bulat tidak terpotong */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-.modal-header-hero img {
+.modal-header-hero > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.35;
-  filter: blur(6px);
-  transform: scale(1.1);
+  object-position: center 20%;
+  opacity: 0.32;
+  filter: blur(8px) saturate(1.2);
+  transform: none;
+  clip-path: inset(0 round var(--radius-lg) var(--radius-lg) 0 0);
 }
 
 .modal-header-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 0%, #ffffff 100%);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(217, 181, 74, 0.35), transparent 55%),
+    linear-gradient(180deg, transparent 30%, #ffffff 100%);
 }
 
 .modal-avatar-box {
   position: absolute;
   left: 28px;
-  bottom: -40px;
-  width: 96px;
-  height: 96px;
-  border-radius: var(--radius-md);
+  bottom: -52px;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #ffffff;
+  border: 4px solid #ffffff;
   background-color: #ede8df;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 2px var(--gold), 0 10px 28px rgba(0, 0, 0, 0.22);
 }
 
 .modal-avatar-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 18%; /* fokus ke wajah */
   opacity: 1 !important;
   filter: none !important;
-  transform: none !important;
+  /* zoom wajah: atur lewat zoom & zoomY di data santri (default tanpa zoom) */
+  transform-origin: 50% 20%;
+  transform: translateY(var(--ty, 0px)) scale(var(--zoom, 1)) !important;
+  clip-path: none !important;
 }
 
 .modal-content {
-  padding: 56px 28px 28px;
+  padding: 68px 28px 28px;
 }
 
 .modal-content h3 {
-  font-size: 1.5rem;
-  margin-bottom: 4px;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: 2px;
   color: var(--navy);
 }
 
@@ -2234,54 +2301,116 @@ h3 {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin: 10px 0 20px;
+  margin: 12px 0 22px;
 }
 
 .modal-pill {
-  padding: 4px 10px;
-  background: #f4efe6;
-  border: 1px solid rgba(138, 106, 20, 0.2);
-  border-radius: var(--radius-xs);
-  font-size: 0.8125rem;
+  padding: 5px 12px;
+  background: #f7f1e1;
+  border: 1px solid rgba(138, 106, 20, 0.22);
+  border-radius: 999px;
+  font-size: 0.78rem;
   color: var(--gold-deep);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .modal-info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-  padding: 14px;
-  background: #f8f6f0;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: var(--radius-sm);
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
-.modal-info-item small {
+.modal-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #faf8f2;
+  border: 1px solid rgba(138, 106, 20, 0.14);
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+
+.modal-info-item.full { grid-column: 1 / -1; }
+
+.mi-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f3e3a6, #e2c466);
+  color: #5c4508;
+}
+
+.mi-ico svg { width: 19px; height: 19px; }
+
+.mi-txt { min-width: 0; }
+
+.mi-txt small {
   display: block;
-  font-size: 0.75rem;
-  color: #777;
+  font-size: 0.68rem;
+  color: #7a7466;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   margin-bottom: 2px;
 }
 
-.modal-info-item span {
-  font-size: 0.9375rem;
-  font-weight: 600;
+.mi-txt strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--navy);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.modal-empty {
+  font-weight: 400;
+  font-style: italic;
+  color: #a39d8e;
+}
+
+.modal-quote-label {
+  margin: 0 0 8px;
+  font-size: 0.68rem;
+  color: #7a7466;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .modal-quote {
-  padding: 14px 18px;
-  background: rgba(217, 181, 74, 0.12);
-  border-left: 3px solid var(--gold-deep);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  font-size: 0.9375rem;
+  position: relative;
+  margin: 0;
+  padding: 18px 20px 18px 54px;
+  background: linear-gradient(135deg, #fbf4dc, #fffaf0);
+  border: 1px solid rgba(217, 181, 74, 0.35);
+  border-radius: var(--radius-md);
+  font-family: var(--serif);
+  font-size: 1rem;
   font-style: italic;
   color: var(--navy);
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+.modal-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: 16px;
+  top: 2px;
+  font-size: 3.4rem;
+  line-height: 1;
+  color: var(--gold);
+  font-style: normal;
+}
+
+@media (max-width: 480px) {
+  .modal-info-grid { grid-template-columns: 1fr; }
+  .modal-content { padding: 64px 20px 22px; }
+  .modal-avatar-box { left: 20px; }
 }
 
 /* ==========================================================================
@@ -2639,4 +2768,119 @@ footer h3, .footer-brand {
   color: #e2bf55;
   -webkit-text-stroke: 0;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55), 0 0 26px rgba(217, 181, 74, 0.45);
+}
+
+/* ==========================================================================
+   HP: foto header tampil utuh (foto grup 4:3 tidak terpotong di layar portrait)
+   Foto di atas, memudar ke gelap, teks di bawahnya.
+   ========================================================================== */
+@media (max-width: 600px) {
+  #slides {
+    inset: var(--nav-h) 0 auto 0;
+    height: 75vw;               /* rasio 4:3 = seluruh foto kelihatan */
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+  }
+
+  #slides img {
+    object-position: 50% 50% !important;  /* abaikan crop desktop */
+    transform: scale(1.06);
+  }
+
+  #slides img.on {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .shade {
+    background: linear-gradient(180deg, rgba(9, 12, 18, 0.35) 0, rgba(9, 12, 18, 0) 18%, rgba(9, 12, 18, 0) 40%, rgba(9, 12, 18, 0.92) 100%);
+  }
+
+  .hero-txt {
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 75vw - 6px) 20px 76px;
+  }
+
+  .hero-txt::before {
+    top: calc(var(--nav-h) + 75vw);
+  }
+
+  .hero h1 {
+    margin: 14px 0 16px;
+  }
+}
+
+
+/* ==========================================================================
+   HP / layar portrait: foto header tampil UTUH (tanpa crop) dan terasa
+   memanjang ke bawah. Foto tajam 4:3 di atas; di bawahnya baris piksel
+   paling bawah foto yang sama direnggangkan + di-blur sehingga latar
+   header melanjutkan foto sampai ke dasar layar.
+   ========================================================================== */
+.sbg { display: none; }
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .hero {
+    --ph-h: 75vw; /* rasio 4:3 = tinggi foto penuh */
+    background-color: #090c12;
+  }
+
+  .sbg {
+    display: block;
+    position: absolute;
+    top: calc(var(--ph-h) - 48px);
+    bottom: 0;
+    left: -24px;
+    right: -24px;
+    background-repeat: no-repeat;
+    background-size: 100% calc(var(--ph-h) * 40); /* renggangkan tepi bawah foto */
+    background-position: center bottom;
+    filter: blur(16px) saturate(1.1);
+    opacity: 0;
+    transition: opacity 1.4s ease-in-out;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 100%);
+  }
+  .sbg.on { opacity: 1; }
+
+  #slides img {
+    inset: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--ph-h);
+    z-index: 2;
+    object-fit: contain;
+    object-position: center !important;
+    transform: none;
+    transition: opacity 1s ease-in-out;
+    /* tepi atas, bawah, kiri, kanan memudar ke hitam (lebih tebal dari sebelumnya) */
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 16%, #000 68%, transparent 97%),
+      linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to bottom, transparent 0, #000 16%, #000 68%, transparent 97%),
+      linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+            mask-composite: intersect;
+  }
+  #slides img.on { opacity: 1; transform: none; }
+
+  /* gelapkan sedikit di area teks agar tetap terbaca */
+  .shade {
+    background: linear-gradient(180deg, rgba(9, 12, 18, 0.15) 0%, rgba(9, 12, 18, 0.15) 30%, rgba(9, 12, 18, 0.55) 52%, rgba(9, 12, 18, 0.72) 100%);
+  }
+
+  .hero { min-height: 0; }
+
+  .hero-txt {
+    margin: 0 auto;
+    padding-top: calc(var(--ph-h) - 6px);
+    padding-bottom: 68px;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+  }
+
+  /* titik navigasi didekatkan ke konten */
+  .dots { bottom: 26px; }
 }

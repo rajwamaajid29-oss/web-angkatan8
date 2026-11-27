@@ -50,9 +50,9 @@ const ANGKATAN = {
     }
   ],
   slides: [
-    { src: img('angkatan4', 1920, 1080), alt: 'Keluarga Besar Angkatan Generation X8' },
-    { src: img('pondok1', 1920, 1080), alt: 'Suasana Senja di Pesantren Ar-Rasyid' },
-    { src: img('kegiatan3', 1920, 1080), alt: 'Kebersamaan Santri dalam Kegiatan Angkatan' }
+    { src: 'foto/header-1-alumni.jpg', alt: 'Alumnus SMPT Ar-Rasyid Angkatan 8', pos: '50% 55%' },
+    { src: 'foto/header-2-studytour.jpg', alt: 'Study Tour Angkatan VIII SMP Tahfidz Ar-Rasyid di Museum Geologi', pos: '50% 62%' }
   ],
+
   fotoTentang: [img('tentang1', 900, 600), img('tentang2', 900, 600)]
 };

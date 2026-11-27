@@ -47,7 +47,9 @@ let timer = null;
 const n = A.slides.length;
 
 $('#slides').innerHTML = A.slides.map((s, i) => `
-  <img src="${s.src}" alt="${esc(s.alt)}" class="${i === 0 ? 'on' : ''}">
+  <div class="sbg ${i === 0 ? 'on' : ''}" style="background-image:url('${s.src}')"></div>
+`).join('') + A.slides.map((s, i) => `
+  <img src="${s.src}" alt="${esc(s.alt)}" class="${i === 0 ? 'on' : ''}"${s.pos ? ` style="object-position:${s.pos}"` : ''}>
 `).join('');
 
 $('#dots').innerHTML = A.slides.map((_, i) => `
@@ -57,6 +59,7 @@ $('#dots').innerHTML = A.slides.map((_, i) => `
 function showSlide(i) {
   si = (i + n) % n;
   $$('#slides img').forEach((e, k) => e.classList.toggle('on', k === si));
+  $$('#slides .sbg').forEach((e, k) => e.classList.toggle('on', k === si));
   $$('#dots button').forEach((e, k) => e.classList.toggle('on', k === si));
   clearInterval(timer);
   timer = setInterval(() => showSlide(si + 1), 3000);
@@ -236,7 +239,7 @@ function renderMembers() {
   $('#clearQ').hidden = !q;
 
   const filtered = getMembersData().filter(m => {
-    const matchName = m.nama.toLowerCase().includes(q) || (m.asal && m.asal.toLowerCase().includes(q));
+    const matchName = m.nama.toLowerCase().includes(q) || ((m.alamat || m.asal || '').toLowerCase().includes(q));
     const matchClass = (k === 'Semua' || m.kelas === k);
     return matchName && matchClass;
   });
@@ -258,11 +261,10 @@ function renderMembers() {
     <div class="member-card rv" data-name="${esc(m.nama)}" tabindex="0" role="button" aria-label="Lihat profil ${esc(m.nama)}">
       <div class="member-photo">
         <img src="${m.foto}" alt="${esc(m.nama)}" loading="lazy">
-        <span class="member-badge">${esc(m.hafalan || 'Alumni')}</span>
       </div>
       <div class="member-info">
         <h4>${esc(m.nama)}</h4>
-        <span class="member-sub">Kelas ${esc(m.kelas)} · ${esc(m.asal || 'Jawa')}</span>
+        <span class="member-sub">Kelas ${esc(m.kelas)}${(m.alamat || m.asal) ? ' · ' + esc(m.alamat || m.asal) : ''}</span>
       </div>
     </div>
   `).join(''));
@@ -273,37 +275,38 @@ function showMemberDetail(name) {
   const member = getMembersData().find(m => m.nama === name);
   if (!member) return;
 
+  const val = v => (v && String(v).trim()) ? esc(v) : '<em class="modal-empty">Belum diisi</em>';
+  const lokasi = member.alamat || member.asal;
+  const item = (icon, label, value, full) => `
+    <div class="modal-info-item${full ? ' full' : ''}">
+      <span class="mi-ico">${icon}</span>
+      <div class="mi-txt"><small>${label}</small><strong>${value}</strong></div>
+    </div>`;
+
   const modalHtml = `
     <div class="modal-header-hero">
       <img src="${member.foto}" alt="">
       <div class="modal-header-shade"></div>
       <div class="modal-avatar-box">
-        <img src="${member.foto}" alt="${esc(member.nama)}">
+        <img src="${member.foto}" alt="Foto ${esc(member.nama)}" style="--zoom:${member.zoom || 1};--ty:${member.zoomY || 0}px">
       </div>
     </div>
     <div class="modal-content">
       <h3>${esc(member.nama)}</h3>
       <div class="modal-badge-row">
-        <span class="modal-pill">Kelas XII-${esc(member.kelas)}</span>
+        <span class="modal-pill">Kelas ${esc(member.kelas)}</span>
         <span class="modal-pill">${currentGender === 'putra' ? 'Santri Ikhwan' : 'Santriwati Akhwat'}</span>
         <span class="modal-pill">Angkatan ${A.angkatanKe}</span>
       </div>
       <div class="modal-info-grid">
-        <div class="modal-info-item">
-          <small>Asal Daerah</small>
-          <span>${esc(member.asal || 'Indonesia')}</span>
-        </div>
-        <div class="modal-info-item">
-          <small>Capaian Hafalan</small>
-          <span>${esc(member.hafalan || '30 Juz')}</span>
-        </div>
-        <div class="modal-info-item" style="grid-column: 1 / -1;">
-          <small>Cita-Cita & Fokus</small>
-          <span>${esc(member.citaCita || 'Khidmah untuk Umat')}</span>
-        </div>
+        ${item(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`, 'Alamat / Asal Daerah', val(lokasi), true)}
+        ${item(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 12 6a5.5 5.5 0 0 0-10 2.5C2 14 12 21 12 21s4-2.7 7-7Z"/></svg>`, 'Hobi', val(member.hobi))}
+        ${item(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>`, 'Lanjut Sekolah ke', val(member.lanjut))}
+        ${item(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></svg>`, 'Cita-Cita', val(member.citaCita), true)}
       </div>
-      <div class="modal-quote">
-        "${esc(member.quote || 'Semoga Allah senantiasa meridhoi setiap langkah persaudaraan kita.')}"
+      <div class="modal-quote-wrap">
+        <div class="modal-quote-label">Motivasi / Kata-Kata</div>
+        <blockquote class="modal-quote">${esc(member.quote || 'Semoga Allah senantiasa meridhoi setiap langkah persaudaraan kita.')}</blockquote>
       </div>
     </div>
   `;
